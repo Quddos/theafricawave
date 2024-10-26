@@ -5,10 +5,10 @@ import { motion } from 'framer-motion'
 import YouTube from 'react-youtube'
 import { FaComment } from 'react-icons/fa'
 
-const videos = [
-  { id: 'aqz-KE-bpKQ', title: 'Big Buck Bunny' },
-  { id: 'XSGBVzeBUbk', title: 'Elephants Dream' },
-  { id: 'YE7VzlLtp-4', title: 'Sintel' },
+const videos = [ 
+  { id: 'kVi6U3z_xRM', title: 'The Africa Wave - Ethiopia Solomon' },
+  { id: '-TAI9vmJHtE', title: "Russia Not Our Ally: Ramaphosa's Coalition Partner DA reacts strongly " },
+  { id: 'i7KjiIMXLTk', title: "The state of Ghana's Parliament " },
 ]
 
 export default function PreviousNews() {
@@ -100,13 +100,13 @@ useEffect(() => {
                     height: '390',
                     width: '100%',
                     playerVars: {
-                      autoplay: 1,
+                      autoplay: 0,
                     },
                   }}
                 />
                 <h3 className="text-xl font-semibold mt-4">{activeVideo.title}</h3>
                 <button
-                  onClick={() => setShowText(false)}
+                  onClick={() => setShowText(true)}
                   className="mt-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
                 >
                   Read as Text

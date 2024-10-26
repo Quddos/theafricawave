@@ -40,7 +40,7 @@ export default function Header() {
     <header className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-md' : 'bg-transparent'}`}>
       <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center">
-          <Image src="/logo.svg" alt="The African Wave" width={50} height={50} className={`mr-2 ${scrolled ? 'text-gray-800' : 'text-white'}`} />
+          <Image src="/images/africawave.jpg" alt="The African Wave" width={50} height={50} className={`mr-2 ${scrolled ? 'text-gray-800' : 'text-white'}`} />
           <motion.span 
             className={`text-xl font-bold ${scrolled ? 'text-gray-800' : 'text-white'}`}
             initial={{ opacity: 0, y: -20 }}

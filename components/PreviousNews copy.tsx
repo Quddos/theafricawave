@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { v4 as uuidv4 } from 'uuid'
 
 const previousNews = [
     { id: 1, title: "Africa's Economic Outlook 2024", videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", transcript: "..." },
@@ -20,7 +21,7 @@ export default function PreviousNews() {
     const handleCommentSubmit = (e) => {
         e.preventDefault()
         if (newComment.trim()) {
-            setComments([...comments, { id: Date.now(), text: newComment }])
+            setComments([...comments, { id: uuidv4(), text: newComment }])
             setNewComment('')
         }
     }
