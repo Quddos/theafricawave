@@ -16,7 +16,7 @@ export default function Home() {
       <Services/>
       <PreviousNews />
       <FAQ />
-      {/* We'll add more components here as we create them */}
+      
 
       <Footer />
     </main>
