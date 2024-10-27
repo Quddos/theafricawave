@@ -16,7 +16,7 @@ const countries = [
 
 const newsItems = [
   { id: 1, title: "Economic Growth in East Africa", country: "Kenya", image: "https://picsum.photos/id/1018/400" },
-  { id: 2, title: "Tech Innovation in Lagos", country: "Nigeria", image: "https://picsum.photos/id/1019/400" },
+  { id: 2, title: "Tech Innovation", country: "Nigeria", image: "https://picsum.photos/id/1019/400" },
   { id: 3, title: "New Wildlife Conservation Efforts", country: "South Africa", image: "https://picsum.photos/id/1020/400" },
   { id: 4, title: "Ancient Tomb Discovered in Luxor", country: "Egypt", image: "https://picsum.photos/id/1021/400" },
   { id: 5, title: "Ghana's Renewable Energy Push", country: "Ghana", image: "https://picsum.photos/id/1022/400" },
