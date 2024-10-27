@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 const countries = [
   { name: 'All', flag: 'https://flagcdn.com/w40/un.png' },
@@ -12,7 +12,7 @@ const countries = [
   { name: 'Kenya', flag: 'https://flagcdn.com/w40/ke.png' },
   { name: 'Egypt', flag: 'https://flagcdn.com/w40/eg.png' },
   { name: 'Ghana', flag: 'https://flagcdn.com/w40/gh.png' },
-]
+];
 
 const newsItems = [
   { id: 1, title: "Economic Growth in East Africa", country: "Kenya", image: "https://picsum.photos/id/1018/400" },
@@ -23,15 +23,22 @@ const newsItems = [
   { id: 6, title: "Pan-African Trade Agreement Progress", country: "All", image: "https://picsum.photos/id/1023/400" },
   { id: 7, title: "Nairobi's Thriving Art Scene", country: "Kenya", image: "https://picsum.photos/id/1024/400" },
   { id: 8, title: "South African Wine Industry Boom", country: "South Africa", image: "https://picsum.photos/id/1025/400" },
-]
+];
+
+interface NewsItem {
+  id: number;
+  title: string;
+  country: string;
+  image: string;
+}
 
 export default function LatestNews() {
-  const [selectedCountry, setSelectedCountry] = useState('All')
-  const [hoveredNews, setHoveredNews] = useState(null)
+  const [selectedCountry, setSelectedCountry] = useState('All');
+  const [hoveredNews, setHoveredNews] = useState<NewsItem | null>(null);
 
   const filteredNews = selectedCountry === 'All'
     ? newsItems
-    : newsItems.filter(item => item.country === selectedCountry)
+    : newsItems.filter(item => item.country === selectedCountry);
 
   return (
     <section className="py-16 relative">
@@ -51,7 +58,7 @@ export default function LatestNews() {
             </motion.button>
           ))}
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 rounded-full ">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 rounded-full">
           {filteredNews.map((item) => (
             <motion.div
               key={item.id}
@@ -86,5 +93,5 @@ export default function LatestNews() {
         />
       )}
     </section>
-  )
+  );
 }

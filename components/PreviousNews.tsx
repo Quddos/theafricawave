@@ -4,22 +4,31 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import YouTube from 'react-youtube'
 import { FaComment } from 'react-icons/fa'
+import { v4 as uuidv4 } from 'uuid'
 
-const videos = [ 
+interface Video {
+  id: string
+  title: string
+}
+
+interface Comment {
+  id: string
+  text: string
+}
+
+const videos: Video[] = [ 
   { id: 'kVi6U3z_xRM', title: 'The Africa Wave - Ethiopia Solomon' },
-  { id: '-TAI9vmJHtE', title: "Russia Not Our Ally: Ramaphosa's Coalition Partner DA reacts strongly " },
-  { id: 'i7KjiIMXLTk', title: "The state of Ghana's Parliament " },
+  { id: '-TAI9vmJHtE', title: "Russia Not Our Ally: Ramaphosa's Coalition Partner DA reacts strongly" },
+  { id: 'i7KjiIMXLTk', title: "The state of Ghana's Parliament" },
 ]
 
 export default function PreviousNews() {
-  const [activeVideo, setActiveVideo] = useState(videos[0])
-  const [comments, setComments] = useState<{ [key: string]: string[] }>({})
+  const [activeVideo, setActiveVideo] = useState<Video>(videos[0])
+  const [comments, setComments] = useState<{ [key: string]: Comment[] }>({})
   const [newComment, setNewComment] = useState('')
   const [showText, setShowText] = useState(false)
   const [aiGeneratedText, setAiGeneratedText] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-
-
 
   useEffect(() => {
     const generateAIContent = async () => {
@@ -28,7 +37,7 @@ export default function PreviousNews() {
         const response = await fetch('/api/ai-text-generation', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ prompt: `Summarize the key points of a video titled: ${activeVideo.title}` })
+          body: JSON.stringify({ prompt: `Summarize the key points of a video titled: ${activeVideo.title}` }),
         })
         const data = await response.json()
         setAiGeneratedText(data.content)
@@ -41,31 +50,30 @@ export default function PreviousNews() {
     generateAIContent()
   }, [activeVideo])
 
-  // Update the useEffect hook in the PreviousNews component
-useEffect(() => {
+  useEffect(() => {
     const fetchComments = async () => {
-      const response = await fetch(`/api/comments?videoId=${activeVideo.id}`)
-      const data = await response.json()
-      setComments(prev => ({ ...prev, [activeVideo.id]: data.comments }))
+      try {
+        const response = await fetch(`/api/comments?videoId=${activeVideo.id}`)
+        const data = await response.json()
+        setComments(prev => ({ ...prev, [activeVideo.id]: data.comments }))
+      } catch (error) {
+        console.error('Error fetching comments:', error)
+      }
     }
     fetchComments()
   }, [activeVideo])
-  
-  // Update the handleCommentSubmit function
-  const handleCommentSubmit = async (e: React.FormEvent) => {
+
+  const handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (newComment.trim()) {
-      const response = await fetch('/api/comments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ videoId: activeVideo.id, comment: newComment })
-      })
-      const data = await response.json()
-      setComments(prev => ({ ...prev, [activeVideo.id]: data.comments }))
+      const newCommentObj: Comment = { id: uuidv4(), text: newComment }
+      setComments(prev => ({
+        ...prev,
+        [activeVideo.id]: [...(prev[activeVideo.id] || []), newCommentObj]
+      }))
       setNewComment('')
     }
   }
-
 
   return (
     <section className="py-16">
@@ -99,9 +107,7 @@ useEffect(() => {
                   opts={{
                     height: '390',
                     width: '100%',
-                    playerVars: {
-                      autoplay: 0,
-                    },
+                    playerVars: { autoplay: 0 },
                   }}
                 />
                 <h3 className="text-xl font-semibold mt-4">{activeVideo.title}</h3>
@@ -116,14 +122,14 @@ useEffect(() => {
             <div className="mt-4">
               <h4 className="font-semibold mb-2">Comments</h4>
               <ul className="space-y-2">
-                {comments[activeVideo.id]?.map((comment, index) => (
+                {comments[activeVideo.id]?.map((comment) => (
                   <motion.li
-                    key={index}
+                    key={comment.id}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="bg-gray-100 p-2 rounded"
                   >
-                    {comment}
+                    {comment.text}
                   </motion.li>
                 ))}
               </ul>
@@ -132,7 +138,7 @@ useEffect(() => {
                   <input
                     type="text"
                     value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewComment(e.target.value)}
                     placeholder="Add a comment..."
                     className="flex-grow border rounded-l px-2 py-1"
                   />
